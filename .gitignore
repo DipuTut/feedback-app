@@ -128,3 +128,9 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+
+terraform/.terraform/providers/registry.terraform.io/hashicorp/aws/5.67.0/windows_amd64/terraform-provider-aws_v5.67.0_x5.exe
+
+
+node_modules
