@@ -14,6 +14,7 @@ pipeline {
 
             steps {
                 git url: "${GITHUB_REPO}", branch: 'main'
+                sh 'ls -la'
             }     
         }     
         stage('Build') {
