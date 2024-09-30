@@ -1,9 +1,13 @@
 import express from 'express';
 import pkg from 'pg';
+import cors from 'cors';
 
 // Creating the express app
 const app = express();
 const PORT = 3000;
+
+// Setup CORS
+app.use(cors());
 
 // Middleware for parsing JSON
 app.use(express.json());
@@ -48,7 +52,7 @@ app.post('/feedback', async (req, res) => {
     try {
         const query = `INSERT INTO feedback (title, text) VALUES ($1, $2);`;
         await pool.query(query, [title, text]);
-        res.status(201).json({ message: "Toll!!! Feedback erfolgreich gespeichert."});
+        res.status(201).json({ message: "Feedback erfolgreich gespeichert."});
     } catch (error) {
         res.status(500).json({ message: "Fehler beim Speichern des Feedbacks." });
     }
