@@ -4,6 +4,7 @@ metadata:
   labels:
     jenkins: slave
 spec:
+  serviceAccountName: jenkins-sa
   containers:
   - name: docker
     image: docker:latest

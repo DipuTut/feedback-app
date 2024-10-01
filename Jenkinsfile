@@ -35,7 +35,7 @@ pipeline {
                 container('docker') {
                     script {
                         docker.withRegistry('', 'dockerhub-token') {
-                            sh 'docker push asadulhaque/feedback-app:pipeline-test'
+                            sh 'docker push asadulhaque90/feedback-app:pipeline-test'
                         }
                     }  
                 }
