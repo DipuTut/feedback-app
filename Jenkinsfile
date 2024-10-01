@@ -20,6 +20,9 @@ spec:
       limits:
         memory: "128Mi"
         cpu: "250m"
+    command:
+    - cat
+    tty: true    
     volumeMounts:
     - name: docker-socket
       mountPath: /var/run/docker.sock
@@ -50,7 +53,7 @@ spec:
             steps {
                 echo 'Building the app...'
                 container('docker') {
-                    sh 'docker build -t asadulhaque90/feedback-app:pipeline-test'
+                    sh 'docker build -t asadulhaque90/feedback-app:pipeline-test .'
                 }
                 echo 'Build successful.'
             }    
