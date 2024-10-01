@@ -62,7 +62,11 @@ spec:
             steps {
                 echo 'Pushing the image to Docker Hub...'
                 container('docker') {
-                    sh 'docker push asadulhaque90/feedback-app:pipeline-test'
+                    script {
+                        docker.withRegistry('', 'dockerhub-token') {
+                             sh 'docker push asadulhaque90/feedback-app:pipeline-test'
+                        }
+                    }
                 }
                 echo 'Push successful.'
             }
