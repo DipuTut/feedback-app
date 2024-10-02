@@ -2,8 +2,8 @@
 docker build \
     -t feedback-app:v4.0 \
     -t feedback-app:latest \
-    -t galaataman/feedback-app:v4.0 \
-    -t galaataman/feedback-app:latest .
+    -t asadulhaque90/feedback-app:v4.0 \
+    -t asadulhaque90/feedback-app:latest .
 
 # Create a docker network for the app
 docker network create feedback-app-nw
