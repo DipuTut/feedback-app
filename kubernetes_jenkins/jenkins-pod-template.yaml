@@ -33,6 +33,18 @@ spec:
     command:
     - cat
     tty: true
+  - name: k6
+    image: grafana/k6:latest
+    resources:
+      requests:
+        memory: "128Mi"
+        cpu: "250m"
+      limits:
+        memory: "128Mi"
+        cpu: "250m"
+    command:
+    - cat
+    tty: true
   volumes:
   - hostPath:
       path: /var/run/docker.sock

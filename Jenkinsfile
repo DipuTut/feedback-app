@@ -65,5 +65,14 @@ pipeline {
                 echo 'Deployment successful.'
             }
         }
+        stage('Integration Tests') {
+            steps {
+                echo 'Running integration tests...'
+                container('k6') {
+                    sh 'k6 run --env BASE_URL=http://feedback-app-api-service:3000 ./tests/feedback-api.integration.js'
+                }
+                echo 'Integration tests ready.'
+            }
+        }
     }   
 }
