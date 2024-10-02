@@ -11,7 +11,9 @@ pipeline {
     }
     
     environment {
-        GITHUB_REPO = 'https://github.com/DipuTut/feedback-app.git'
+        GITHUB_REPO = 'https://github.com/atamankina/feedback-app.git'
+        DOCKER_IMAGE = 'galaataman/feedback-app:pipeline-test'
+        DOCKER_CREDENTIALS_ID = 'dockerhub-token'
     }
     
     stages {        
@@ -24,7 +26,7 @@ pipeline {
             steps {
                 echo 'Building the app...'
                 container('docker') {
-                    sh 'docker build -t asadulhaque90/feedback-app:pipeline-test .'
+                    sh 'docker build -t $DOCKER_IMAGE .'
                 }
                 echo 'Build successful.'
             }    
@@ -34,15 +36,27 @@ pipeline {
                 echo 'Pushing the image to Docker Hub...'
                 container('docker') {
                     script {
-                        docker.withRegistry('', 'dockerhub-token') {
-                            sh 'docker push asadulhaque90/feedback-app:pipeline-test'
+                        docker.withRegistry('', "${DOCKER_CREDENTIALS_ID}") {
+                            sh 'docker push $DOCKER_IMAGE'
                         }
                     }  
                 }
                 echo 'Push successful.'
             }
         }
-        stage('Kubernetes Deploy') {
+        stage('Kubernetes Deploy Dependencies') {
+            steps {
+                echo 'Deploying to kubernetes cluster...'
+                container('kubectl') {
+                    sh 'kubectl apply -f kubernetes/secret.yaml'
+                    sh 'kubectl apply -f kubernetes/configmap.yaml'
+                    sh 'kubectl apply -f kubernetes/database-volume.yaml'
+                    sh 'kubectl apply -f kubernetes/database-deployment.yaml'
+                } 
+                echo 'Deployment successful.'
+            }
+        }
+        stage('Kubernetes Deploy API') {
             steps {
                 echo 'Deploying to kubernetes cluster...'
                 container('kubectl') {
