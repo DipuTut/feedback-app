@@ -2,6 +2,7 @@ import express from 'express';
 import pkg from 'pg';
 import cors from 'cors';
 
+
 // Creating the express app
 const app = express();
 const PORT = 3000;
