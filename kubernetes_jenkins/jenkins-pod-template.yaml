@@ -34,7 +34,7 @@ spec:
     - cat
     tty: true
   - name: k6
-    image: grafana/k6:latest
+    image: asadulhaque90/k6:latest
     resources:
       requests:
         memory: "128Mi"
