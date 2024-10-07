@@ -12,8 +12,11 @@ pipeline {
     
     environment {
         GITHUB_REPO = 'https://github.com/DipuTut/feedback-app'
-        DOCKER_IMAGE = 'asadulhaque90/feedback-app:pipeline-test'
         DOCKER_CREDENTIALS_ID = 'dockerhub-token'
+        DOCKER_REPO = 'asadulhaque90/feedback-app'
+        IMAGE_TAG = "${BUILD_NUMBER}"
+        DOCKER_IMAGE = "${DOCKER_REPO}:${IMAGE_TAG}"
+
     }
     
     stages {        
@@ -60,7 +63,11 @@ pipeline {
             steps {
                 echo 'Deploying to kubernetes cluster...'
                 container('kubectl') {
-                    sh 'kubectl apply -f kubernetes/api-deployment.yaml'
+                    script {
+                        sed -i "s|image: asadulhaque90/feedback-app:latest|image: $DOCKER_IMAGE|g" kubernetes/api-deployment.yaml
+                        sh 'kubectl apply -f kubernetes/api-deployment.yaml'
+                    }
+                    
                 } 
                 echo 'Deployment successful.'
             }
