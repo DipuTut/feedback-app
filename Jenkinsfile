@@ -67,33 +67,31 @@ pipeline {
         }
         stage('Check App Status') {
             steps {
-            echo 'Checking in the App is reachable...'
-            script {
-                def retries = 30
-                def delay = 10
-                def url = "http://feedback-app-api-service:3000/feedback"
+                echo 'Checking if the App is reachable...'
+                script {
+                    def retries = 30
+                    def delay = 10
+                    def url = "http://feedback-app-api-service:3000/feedback"
 
-                for (int i = 0, i < retries; i++) {
-                    def result = sh(script: "curl -s -o /dev/null -w '%{http_code}' $url", 
-                    returnStdout: true).trim()
+                    for (int i = 0; i < retries; i++) {
+                        def result = sh(script: "curl -s -o /dev/null -w '%{http_code}' $url", returnStdout: true).trim()
 
-                    if (result == '200') {
-                        echo 'App is reachable!'
-                        break
-                    } else {
-                        echo "App health check ${i + 1}: HTTP $result . Retraying in ${delay} seconds."
+                        if (result == '200') {
+                            echo 'App is reachable!'
+                            break
+                        } else {
+                            echo "App health check ${i + 1}: HTTP $result . Retrying in ${delay} seconds."
+                        }
+
+                        if (i == retries -1) {
+                            error "App is unreachable after ${retries} attempts."
+                        }
+
+                        sleep delay
                     }
-                    if (i == retries -1) {
-                        error "App is unreachable after ${retries} attempts."
-                    }
-
-                    sleep delay
-
                 }
             }
-          }
         }
-
         stage('Integration Tests') {
             steps {
                 echo 'Running integration tests...'
