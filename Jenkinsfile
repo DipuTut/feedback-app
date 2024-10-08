@@ -22,7 +22,7 @@ pipeline {
         stage('Checkout') {           
             steps {
                 echo 'Checking out code...'
-                git url: "${GITHUB_REPO}", branch: 'refactoring'
+                git url: "${GITHUB_REPO}", branch: 'main'
             }            
         }       
         stage('Docker Build') {   
