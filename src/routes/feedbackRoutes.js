@@ -11,7 +11,7 @@ feedbackRouter.post('/feedback', feedbackValidation, async (req, res) => {
     try {
         const { title, text } = req.body;
         const newFeedback = await addFeedback(title, text);
-        sendSuccess(res, newFeedback, "Feedback erfolgreich gespeichert.");
+        sendSuccess(res, newFeedback, "Feedback erfolgreich gespeichert.", 201);
     } catch (error) {
         sendError(res, "Fehler beim Speichern des Feedbacks.");
     }
