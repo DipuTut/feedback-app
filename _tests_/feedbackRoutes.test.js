@@ -18,7 +18,7 @@ describe('Feedback Routes', () => {
         jest.clearAllMocks();
     });
 
-    it('POST /feedback - soll Feedback speichern und 201 zurueckgeben', async () => {
+    it('POST /feedback - should add feedback and return 201', async () => {
         const mockFeedback = {
             id: 1,
             title: 'Test Feedback',
@@ -34,6 +34,34 @@ describe('Feedback Routes', () => {
         expect(response.status).toBe(201);
         expect(response.body.message).toBe("Feedback erfolgreich gespeichert.");
         expect(response.body.data).toEqual(mockFeedback);
+    });
+
+    it('GET /feedback - should return all feedback', async () => {
+        const mockFeedback = [{ id: 1, title: 'Test Feedback', text: 'Test text' }];
+        getAllFeedback.mockResolvedValue(mockFeedback);
+
+        const response = await request(app).get('/feedback');
+
+        expect(response.status).toBe(200);
+        expect(response.body.data).toEqual(mockFeedback);
+    });
+
+    it('DELETE /feedback/:title - should delete feedback and return 200', async () => {
+        deleteFeedbackByTitle.mockResolvedValue({ rowCount: 1 });
+
+        const response = await request(app).delete('/feedback/test');
+
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBe('Feedback erfolgreich geloescht.');
+    });
+
+    it('DELETE /feedback/:title - should return 404 if feedback not found', async () => {
+        deleteFeedbackByTitle.mockResolvedValue({ rowCount: 0 });
+
+        const response = await request(app).delete('/feedback/nonexistent_title');
+
+        expect(response.status).toBe(404);
+        expect(response.body.error).toBe('Feedback nicht gefunden.');
     });
 
 });

@@ -16,7 +16,7 @@ describe('Response Helper', () => {
         jest.clearAllMocks();
     });
 
-    it('Sendet eine Erfolg-Antwort mit dem Standard Status Code', () => {
+    it('should send success response with default message', () => {
         sendSuccess(mockRes, mockData)
 
         expect(mockRes.status).toHaveBeenCalledWith(200);
@@ -24,6 +24,12 @@ describe('Response Helper', () => {
             message: 'Anfrage erfolgreich.',
             data: mockData
         });
+    });
 
+    it('should send error response with custom status code', () => {
+        sendError(mockRes, 'Es gibt einen Fehler in der Anfrage.', 400);
+
+        expect(mockRes.status).toHaveBeenCalledWith(400);
+        expect(mockRes.json).toHaveBeenCalledWith({ error: 'Es gibt einen Fehler in der Anfrage.' });
     });
 });

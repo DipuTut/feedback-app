@@ -24,6 +24,18 @@ pipeline {
                 echo 'Checking out code...'
                 git url: "${GITHUB_REPO}", branch: 'main'
             }            
+        }
+        stage('Run Unit Tests') {
+            steps {
+                echo 'Running unit tests...'
+                container('node') {
+                    sh '''
+                        npm install
+                        npm test
+                    '''
+                }
+                echo 'Unit tests completed successfully.'
+            }
         }       
         stage('Docker Build') {   
             steps {
@@ -72,7 +84,7 @@ pipeline {
                 container('kubectl') {
                     script {
                         sh '''
-                            sed -i "s|image: asadulhaque90/feedback-app:latest|image: $DOCKER_IMAGE|g" kubernetes/api-deployment.yaml
+                            sed -i "s|image: galaataman/feedback-app:latest|image: $DOCKER_IMAGE|g" kubernetes/api-deployment.yaml
                         '''
                         sh '''
                             kubectl apply -f kubernetes/api-deployment.yaml
@@ -150,12 +162,3 @@ pipeline {
         }
     }   
 }
-
-
-
-
-
-
-
-
-
