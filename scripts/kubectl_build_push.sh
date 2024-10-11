@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Variables
-DOCKER_IMAGE_NAME="galaataman/kubectl"
+DOCKER_IMAGE_NAME="asadulhaque90/kubectl"
 DOCKERFILE_NAME="kubectl_dockerfile"
 DOCKER_TAG="latest"
 
